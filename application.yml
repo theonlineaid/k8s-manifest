@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/theonlineaid/go-api  # Your GitHub repository URL
-    targetRevision: main  # The branch you're using (main, for example)
-    path: k8s  # Path to your Kubernetes manifests
+    repoURL: https://github.com/theonlineaid/k8s-manifest  # Updated with your new Kubernetes manifests repo URL
+    targetRevision: main  # Branch you want to track (main or master)
+    path: .  # Path to the Kubernetes manifests directory (root in this case)
   destination:
-    server: https://kubernetes.default.svc  # Your Kubernetes cluster URL
-    namespace: default  # Kubernetes namespace to deploy to
+    server: https://kubernetes.default.svc  # Kubernetes cluster URL (default for in-cluster)
+    namespace: default  # Namespace where your resources will be deployed
   syncPolicy:
     automated:
-      prune: true  # Automatically remove resources if they are removed from the Git repo
-      selfHeal: true  # Automatically sync if the current state drifts from the Git state
+      prune: true  # Automatically remove resources if deleted from Git
+      selfHeal: true  # Automatically sync if drift occurs
