@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
         - name: go-api
-          image: onlineaid/go-api  # Docker Hub image (make sure to replace with your actual image)
+          image: onlineaid/go-api:01d717aea494e703c2029464ea3a3fcbb251ab13  # Docker Hub image (make sure to replace with your actual image)
           ports:
             - containerPort: 8080  # Port exposed by your Go API
