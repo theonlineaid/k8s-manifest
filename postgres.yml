@@ -35,9 +35,15 @@ spec:
         volumeMounts:
         - name: postgres-storage
           mountPath: /var/lib/postgresql/data
+        - name: init-script-volume
+          mountPath: /docker-entrypoint-initdb.d
       volumes:
       - name: postgres-storage
-        emptyDir: {} # Use persistent volume in production
+        emptyDir: {}
+      - name: init-script-volume
+        configMap:
+          name: db-init-scripts
+
 ---
 apiVersion: v1
 kind: Service

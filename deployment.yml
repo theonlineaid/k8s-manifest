@@ -49,17 +49,7 @@ spec:
             configMapKeyRef:
               name: db-config
               key: PORT
-        volumeMounts:
-        - name: postgres-storage
-          mountPath: /var/lib/postgresql/data
-        - name: init-scripts
-          mountPath: /docker-entrypoint-initdb.d   # Mount init.sql here
-      volumes:
-      - name: postgres-storage
-        emptyDir: {}  # Use a persistent volume in production
-      - name: init-scripts
-        configMap:
-          name: db-init-scripts  # ConfigMap with init.sql
+
 ---
 apiVersion: v1
 kind: Service
