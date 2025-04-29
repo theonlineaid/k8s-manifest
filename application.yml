@@ -6,13 +6,13 @@ metadata:
 spec:
   project: default
   source:
-    repoURL: https://github.com/theonlineaid/k8s-manifest  # Updated with your new Kubernetes manifests repo URL
-    targetRevision: main  # Branch you want to track (main or master)
-    path: .  # Path to the Kubernetes manifests directory (root in this case)
+    repoURL: https://github.com/theonlineaid/k8s-manifest.git
+    targetRevision: main
+    path: .
   destination:
-    server: https://kubernetes.default.svc  # Kubernetes cluster URL (default for in-cluster)
-    namespace: default  # Namespace where your resources will be deployed
+    server: https://kubernetes.default.svc
+    namespace: default
   syncPolicy:
     automated:
-      prune: true  # Automatically remove resources if deleted from Git
-      selfHeal: true  # Automatically sync if drift occurs
+      prune: true
+      selfHeal: true

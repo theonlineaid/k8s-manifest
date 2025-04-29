@@ -2,8 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: go-api
-  labels:
-    app: go-api
+  namespace: default
 spec:
   replicas: 1
   selector:
@@ -15,48 +14,52 @@ spec:
         app: go-api
     spec:
       containers:
-        - name: go-api
-          image: onlineaid/go-api:01d717aea494e703c2029464ea3a3fcbb251ab13  # Docker Hub image (make sure to replace with your actual image)
-          ports:
-            - containerPort: 8080  # Port exposed by your Go API
-          env:
-            - name: DB_HOST
-              value: "db"  # Refers to the db service
-            - name: DB_PORT
-              value: "5432"
-            - name: DB_USER
-              value: "admin"
-            - name: DB_PASSWORD
-              value: "secret"
-            - name: DB_NAME
-              value: "mydb"
-            - name: PORT
-              value: "8080"
-
+      - name: go-api
+        image: theonlineaid/go-api:latest
+        ports:
+        - containerPort: 8080
+        env:
+        - name: DB_HOST
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_HOST
+        - name: DB_PORT
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PORT
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_USER
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_PASSWORD
+        - name: DB_NAME
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: DB_NAME
+        - name: PORT
+          valueFrom:
+            secretKeyRef:
+              name: db-credentials
+              key: PORT
 ---
-apiVersion: apps/v1
-kind: Deployment
+apiVersion: v1
+kind: Service
 metadata:
-  name: db
+  name: go-api-service
+  namespace: default
 spec:
-  replicas: 1
   selector:
-    matchLabels:
-      app: db
-  template:
-    metadata:
-      labels:
-        app: db
-    spec:
-      containers:
-        - name: db
-          image: postgres:latest  # You can change this to a specific version if needed
-          env:
-            - name: POSTGRES_USER
-              value: "admin"
-            - name: POSTGRES_PASSWORD
-              value: "secret"
-            - name: POSTGRES_DB
-              value: "mydb"
-          ports:
-            - containerPort: 5432
+    app: go-api
+  ports:
+  - protocol: TCP
+    port: 80
+    targetPort: 8080
+  type: ClusterIP
