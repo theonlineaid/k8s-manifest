@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: go-api
-        image: theonlineaid/go-api:latest
+        image: onlineaid/go-api:latest
         ports:
         - containerPort: 8080
         env:
